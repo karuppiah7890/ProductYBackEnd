@@ -1,0 +1,25 @@
+
+otp table
+
+id code time
+
+
+login table
+
+id phno password type
+
+customer
+
+id firstname lastname email(unique) validation                             (Doubt otp,admin,superadmin,product not available)
+
+vendor
+
+id storename ownername address location phno Rating noofrating
+
+product
+
+pid name volume price 
+
+productmapping
+
+vid pid price
