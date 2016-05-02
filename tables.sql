@@ -14,4 +14,11 @@ create table customer(
 	validation VARCHAR(10) NOT NULL
 );
 
+create table product(
+	pid INT NOT NULL AUTO_INCREMENT,
+	name VARCHAR(40) NOT NULL,
+	volume DOUBLE NOT NULL,
+	price DOUBLE NOT NULL,
+	PRIMARY KEY(pid)
+);
 
