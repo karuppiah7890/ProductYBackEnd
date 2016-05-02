@@ -19,7 +19,7 @@
 			return 0;
 		}
 		else
-		return 0;
+		return -1;
 	}
 
 	$post = null;
@@ -57,7 +57,10 @@
 		$emailQuery = "select email from customer where email='".$email."';";
 		$mobileQuery = "select phno from login where phno='".$mobile."';";
 
-		if(isZeroRows($conn,$emailQuery) && isZeroRows($conn,$mobileQuery)){
+		$result1 = isZeroRows($conn,$emailQuery);
+		$result2 = isZeroRows($conn,$mobileQuery);
+
+		if($result1==1 && $result2==1){
 
 			$loginInsertQuery = 
 			"insert into login values(null,'$mobile','$password','customer');";
@@ -82,8 +85,11 @@
 			$response['Mystatus'] = "Error while inserting into login";
 		}
 
+		else if($result1==-1 || $result2 ==-1)
+		$response['Mystatus'] = "Email/Mobile Available Query Run Error";
+
 		else
-		$response['Mystatus'] = "Already Registered / Error in DB Query or Server";
+		$response['Mystatus'] = "Already Registered";
 		
 
 	}
