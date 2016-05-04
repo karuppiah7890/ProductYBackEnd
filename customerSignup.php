@@ -28,7 +28,7 @@
 	{
 		global $post;
 		
-		$names = array('firstname','lastname','email','mobile','password');
+		$names = array('firstname','lastname','email','mobile','password','repassword');
 
 		$post = json_decode(file_get_contents("php://input"),true);
 
@@ -53,6 +53,14 @@
 		$email = mysqli_escape_string($conn,$post['email']);
 		$mobile = mysqli_escape_string($conn,$post['mobile']);
 		$password = mysqli_escape_string($conn,$post['password']);
+		$repassword = mysqli_escape_string($conn,$post['repassword']);
+
+		if($password!=$repassword)
+		{
+			$response['Mystatus'] = "Passwords don't match";
+			echo json_encode($response);
+			die();
+		}
 
 		$emailQuery = "select email from customer where email='".$email."';";
 		$mobileQuery = "select phno from login where phno='".$mobile."';";
@@ -60,7 +68,8 @@
 		$result1 = isZeroRows($conn,$emailQuery);
 		$result2 = isZeroRows($conn,$mobileQuery);
 
-		if($result1==1 && $result2==1){
+		if($result1==1 && $result2==1)
+		{
 
 			$loginInsertQuery = 
 			"insert into login values(null,'$mobile','$password','customer');";
