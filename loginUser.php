@@ -8,21 +8,6 @@
 
 	header('Content-Type: application/json');
 
-	function isOneRow($conn,$query)
-	{
-		if(($query_run = mysqli_query($conn,$query)))
-		{
-			if(mysqli_num_rows($query_run)==1)
-			return 1;
-			
-			else
-			return 0;
-		}
-
-		else
-		return -1;
-	}
-
 	$post = null;
 
 	function isEmpty()
@@ -42,7 +27,8 @@
 	}
 
 	$response = array(
-						'Mystatus' => 'No Data Error'
+						'Mystatus' => 'No Data Error',
+						'id' => null
 					);
 
 	if(!isEmpty())
@@ -54,16 +40,22 @@
 
 		$loginQuery = "select id from login where phno='".$mobile."' and password='".$password."';";
 
-		$result = isOneRow($conn,$loginQuery);
+		if(($query_run = mysqli_query($conn,$loginQuery)))
+		{
+			if(mysqli_num_rows($query_run)==1)
+			{
+				$row = mysqli_fetch_assoc($query_run);
+				$response['id'] = $row['id'];
+				$response['Mystatus'] = "Success";
+			}
 
-		if($result==1)
-		$response['Mystatus'] = "Success";
-
-		else if($result==0)
-		$response['Mystatus'] = "Wrong Mobile Number / Password";
+			else
+			$response['Mystatus'] = "Wrong Mobile Number / Password";
+		}
 
 		else
 		$response['Mystatus'] = "Query Run Error";
+
 	}
 
 	echo json_encode($response);
